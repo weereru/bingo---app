@@ -177,10 +177,11 @@ function mark(cell) {
   if (cell.classList.contains("marked")) return;
   cell.classList.add("marked");
   popImg.src = imgList[Math.floor(Math.random() * imgList.length)];
-  popup.style.display = "flex";
-  popup.style.opacity = "1";
-  setTimeout(() => (popup.style.opacity = "0"), 700);
-  setTimeout(() => (popup.style.display = "none"), 1300);
+ popup.style.display = "flex";
+popup.style.opacity = "1";
+setTimeout(() => (popup.style.opacity = "0"), 2700); // ← 2.7秒でフェードアウト
+setTimeout(() => (popup.style.display = "none"), 3000); // ← 3秒後に完全非表示
+
   if (isReach() && !isBingo()) {
     document.body.classList.add("pulse-bg");
   }
