@@ -1,249 +1,239 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>お題ビンゴ</title>
-<style>
-body {
-  font-family: sans-serif;
-  margin: 0;
-  text-align: center;
-  background: #fafafa;
-  transition: background 0.4s;
-}
-h1 {
-  margin: 16px 0 4px;
-  font-size: 26px;
-}
-#controls {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-  margin-bottom: 8px;
-}
-button {
-  padding: 8px 16px;
-  font-size: 15px;
-  border: none;
-  border-radius: 6px;
-  color: #fff;
-  background: #2196f3;
-  min-width: 105px;
-}
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  width: 96vw;
-  max-width: 360px;
-  margin: 0 auto;
-}
-.grid.locked {
-  border: 4px solid #2196f3;
-  padding: 4px;
-  border-radius: 8px;
-}
-.cell {
-  position: relative;
-  border: 2px solid #555;
-  width: 100%;
-  aspect-ratio: 1/1;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-}
-.cell span.num {
-  position: absolute;
-  left: 4px;
-  top: 2px;
-  font-size: 14px;
-  font-weight: 700;
-  color: #000;
-  border: 1px solid #000;
-  padding: 0 4px;
-  border-radius: 3px;
-  background: #fff;
-  pointer-events: none;
-}
-.cell .text {
-  width: 92%;
-  height: 78%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  font-size: 16px;
-  line-height: 1.2;
-  word-break: break-word;
-  overflow: auto;
-  pointer-events: auto;
-}
-.cell[contenteditable="true"]:focus {
-  outline: 2px solid #2196f3;
-}
-.marked {
-  background: #4caf50;
-  color: #fff;
-}
-#popup {
-  position: fixed;
-  inset: 0;
-  display: none;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0, 0, 0, 0.8);
-  transition: opacity 0.4s;
-  z-index: 1000;
-}
-#popup img {
-  width: 90vw;
-  max-height: 90vh;
-  object-fit: contain;
-}
-#setNotice {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  display: none;
-  z-index: 1100;
-  font-size: 20px;
-  font-weight: 700;
-  color: #fff;
-  background: #000;
-  padding: 6px 16px;
-  border-radius: 6px;
-}
-@keyframes pulse {
-  0% { background: #ffe5e5; }
-  50% { background: #ff8a8a; }
-  100% { background: #ffe5e5; }
-}
-.pulse-bg @keyframes flashin {
-  0% { filter: brightness(2) blur(5px); opacity: 0; }
-  30% { filter: brightness(1.5); opacity: 1; }
-  100% { filter: brightness(1) blur(0); }
-}
-#popup img {
-  animation: flashin 0.6s ease-out;
-}
-
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>お題ビンゴ</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      text-align: center;
+      background: #fafafa;
+      transition: background 0.4s;
+    }
+    h1 {
+      margin: 16px 0 4px;
+      font-size: 26px;
+    }
+    #controls {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    button {
+      padding: 8px 16px;
+      font-size: 15px;
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      background: #2196f3;
+      min-width: 105px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      width: 96vw;
+      max-width: 360px;
+      margin: 0 auto;
+    }
+    .grid.locked {
+      border: 4px solid #2196f3;
+      padding: 4px;
+      border-radius: 8px;
+    }
+    .cell {
+      position: relative;
+      border: 2px solid #555;
+      width: 100%;
+      aspect-ratio: 1/1;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .cell span.num {
+      position: absolute;
+      left: 4px;
+      top: 2px;
+      font-size: 14px;
+      font-weight: 700;
+      color: #000;
+      border: 1px solid #000;
+      padding: 0 4px;
+      border-radius: 3px;
+      background: #fff;
+      pointer-events: none;
+    }
+    .cell .text {
+      width: 92%;
+      height: 78%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-size: 16px;
+      line-height: 1.2;
+      word-break: break-word;
+      overflow: auto;
+      pointer-events: auto;
+    }
+    .cell[contenteditable="true"]:focus {
+      outline: 2px solid #2196f3;
+    }
+    .marked {
+      background: #4caf50;
+      color: #fff;
+    }
+    #popup {
+      position: fixed;
+      inset: 0;
+      display: none;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.8);
+      transition: opacity 0.4s;
+      z-index: 1000;
+    }
+    #popup img {
+      width: 90vw;
+      max-height: 90vh;
+      object-fit: contain;
+      animation: flashin 0.6s ease-out;
+    }
+    @keyframes flashin {
+      0% { filter: brightness(2) blur(5px); opacity: 0; }
+      30% { filter: brightness(1.5); opacity: 1; }
+      100% { filter: brightness(1) blur(0); }
+    }
+    #setNotice {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: none;
+      z-index: 1100;
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+      background: #000;
+      padding: 6px 16px;
+      border-radius: 6px;
+    }
+    @keyframes pulse {
+      0% { background: #ffe5e5; }
+      50% { background: #ff8a8a; }
+      100% { background: #ffe5e5; }
+    }
+    .pulse-bg {
+      animation: pulse 1.6s ease-in-out infinite;
+    }
+  </style>
 </head>
 <body>
-<h1>お題ビンゴ</h1>
-<div id="controls">
-  <button id="shuffleBtn">数字シャッフル</button>
-  <button id="setBtn">セット！</button>
-</div>
-<div class="grid" id="grid"></div>
-<div id="popup"><img id="popImg" src="" alt="popup" /></div>
-<div id="setNotice">セット完了！</div>
-<script>
-const grid = document.getElementById("grid");
-const popup = document.getElementById("popup");
-const popImg = document.getElementById("popImg");
-const shuffleBtn = document.getElementById("shuffleBtn");
-const setBtn = document.getElementById("setBtn");
-const setNotice = document.getElementById("setNotice");
-const imgList = ['./images/img1.jpg', './images/img2.jpg', './images/img3.jpg', './images/img4.jpg', './images/img5.jpg', './images/img6.jpg', './images/img7.jpg', './images/img8.jpg', './images/img9.jpg', './images/img10.jpg',  './images/img14.jpg', './images/img15.jpg', './images/img16.jpg', './images/img17.jpg', './images/img18.jpg', './images/img19.jpg', './images/img20.jpg', './images/img21.jpg', './images/img22.jpg', './images/img23.jpg', './images/img24.jpg', './images/img25.jpg', './images/img26.jpg', './images/img27.jpg', './images/img28.jpg', './images/img29.jpg'];
-let cells = [];
-let gameLocked = true;
+  <h1>お題ビンゴ</h1>
+  <div id="controls">
+    <button id="shuffleBtn">数字シャッフル</button>
+    <button id="setBtn">セット！</button>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div id="popup"><img id="popImg" src="" alt="popup" /></div>
+  <div id="setNotice">セット完了！</div>
+  <script>
+    const grid = document.getElementById("grid");
+    const popup = document.getElementById("popup");
+    const popImg = document.getElementById("popImg");
+    const shuffleBtn = document.getElementById("shuffleBtn");
+    const setBtn = document.getElementById("setBtn");
+    const setNotice = document.getElementById("setNotice");
+    const imgList = Array.from({ length: 29 }, (_, i) => `./images/img${i + 1}.jpg`);
+    let cells = [];
+    let gameLocked = true;
 
-function buildBoard() {
-  grid.innerHTML = "";
-  grid.classList.remove("locked");
-  document.body.classList.remove("pulse-bg");
-  document.body.style.background = "#fafafa";
-  cells = [];
-  gameLocked = true;
-  setBtn.disabled = false;
-  const nums = [...Array(9).keys()].map(n => n + 1).sort(() => Math.random() - 0.5);
-  nums.forEach(n => {
-    const cell = document.createElement("div");
-    cell.className = "cell";
-    const numLabel = document.createElement("span");
-    numLabel.className = "num";
-    numLabel.textContent = n;
-    const txt = document.createElement("div");
-    txt.className = "text";
-    txt.contentEditable = true;
-    cell.addEventListener("click", () => !gameLocked && mark(cell));
-    cell.append(numLabel, txt);
-    grid.appendChild(cell);
-    cells.push(cell);
-  });
-}
+    function buildBoard() {
+      grid.innerHTML = "";
+      grid.classList.remove("locked");
+      document.body.classList.remove("pulse-bg");
+      document.body.style.background = "#fafafa";
+      cells = [];
+      gameLocked = true;
+      setBtn.disabled = false;
+      const nums = [...Array(9).keys()].map(n => n + 1).sort(() => Math.random() - 0.5);
+      nums.forEach(n => {
+        const cell = document.createElement("div");
+        cell.className = "cell";
+        const numLabel = document.createElement("span");
+        numLabel.className = "num";
+        numLabel.textContent = n;
+        const txt = document.createElement("div");
+        txt.className = "text";
+        txt.contentEditable = true;
+        cell.addEventListener("click", () => !gameLocked && mark(cell));
+        cell.append(numLabel, txt);
+        grid.appendChild(cell);
+        cells.push(cell);
+      });
+    }
 
-function mark(cell) {
-  if (cell.classList.contains("marked")) return;
-  cell.classList.add("marked");
-  popImg.src = imgList[Math.floor(Math.random() * imgList.length)];
- popup.style.display = "flex";
-popup.style.opacity = "1";
-setTimeout(() => (popup.style.opacity = "0"), 2700); // ← 2.7秒でフェードアウト
-setTimeout(() => (popup.style.display = "none"), 3000); // ← 3秒後に完全非表示
+    function mark(cell) {
+      if (cell.classList.contains("marked")) return;
+      cell.classList.add("marked");
+      popImg.src = imgList[Math.floor(Math.random() * imgList.length)];
+      popup.style.display = "flex";
+      popup.style.opacity = "1";
+      setTimeout(() => (popup.style.opacity = "0"), 2700);
+      setTimeout(() => (popup.style.display = "none"), 3000);
+      if (isReach() && !isBingo()) {
+        document.body.classList.add("pulse-bg");
+      }
+      if (isBingo()) {
+        document.body.classList.remove("pulse-bg");
+        document.body.style.background = "#c8e6c9";
+      }
+    }
 
-  if (isReach() && !isBingo()) {
-    document.body.classList.add("pulse-bg");
-  }
-  if (isBingo()) {
-    document.body.classList.remove("pulse-bg");
-    document.body.style.background = "#c8e6c9";
-  }
-}
+    function isReach() {
+      const m = cells.map(c => c.classList.contains("marked"));
+      const lines = [
+        [0,1,2], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]
+      ];
+      return lines.some(line => line.filter(i => m[i]).length === 2 && line.filter(i => !m[i]).length === 1);
+    }
 
-function isReach() {
-  const m = cells.map(c => c.classList.contains("marked"));
-  const l = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  return l.some(line => line.filter(i => m[i]).length === 2 && line.filter(i => !m[i]).length === 1);
-}
+    function isBingo() {
+      const m = cells.map(c => c.classList.contains("marked"));
+      const lines = [
+        [0,1,2], [3,4,5], [6,7,8],
+        [0,3,6], [1,4,7], [2,5,8],
+        [0,4,8], [2,4,6]
+      ];
+      return lines.some(line => line.every(i => m[i]));
+    }
 
-function isBingo() {
-  const m = cells.map(c => c.classList.contains("marked"));
-  const l = [
-    [0, 1, 2],
-    [3, 4, 5],
-    [6, 7, 8],
-    [0, 3, 6],
-    [1, 4, 7],
-    [2, 5, 8],
-    [0, 4, 8],
-    [2, 4, 6],
-  ];
-  return l.some(line => line.every(i => m[i]));
-}
+    shuffleBtn.onclick = () => buildBoard();
+    setBtn.onclick = () => {
+      cells.forEach(c => {
+        const t = c.querySelector(".text");
+        t.contentEditable = false;
+        t.style.pointerEvents = "none";
+      });
+      gameLocked = false;
+      setBtn.disabled = true;
+      grid.classList.add("locked");
+      setNotice.style.display = "block";
+      setNotice.style.opacity = 0;
+      setTimeout(() => (setNotice.style.opacity = 1), 30);
+      setTimeout(() => (setNotice.style.opacity = 0), 800);
+      setTimeout(() => (setNotice.style.display = "none"), 1000);
+    };
 
-shuffleBtn.onclick = () => buildBoard();
-setBtn.onclick = () => {
-  cells.forEach(c => {
-    const t = c.querySelector(".text");
-    t.contentEditable = false;
-    t.style.pointerEvents = "none";
-  });
-  gameLocked = false;
-  setBtn.disabled = true;
-  grid.classList.add("locked");
-  setNotice.style.display = "block";
-  setNotice.style.opacity = 0;
-  setTimeout(() => (setNotice.style.opacity = 1), 30);
-  setTimeout(() => (setNotice.style.opacity = 0), 800);
-  setTimeout(() => (setNotice.style.display = "none"), 1000);
-};
-buildBoard();
-</script>
+    buildBoard();
+  </script>
 </body>
 </html>
